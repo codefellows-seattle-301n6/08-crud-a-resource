@@ -17,5 +17,5 @@ There is no portfolio assignment.
 
 ## Technical Requirements and Grading Rubric
  - Keep your code linted, as you work. Clean up all concerns before submitting.
- - Utilize the webSQL layer (via the provided `webDB` wrapper) to load and store articles information
- - Import the data into WebSQL from your JSON source.
+ - Write your SQL queries inside the quotes found near the TODOs
+ 
