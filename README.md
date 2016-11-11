@@ -1,8 +1,6 @@
 ![CF](https://i.imgur.com/7v5ASc8.png)  Lab 08: CRUD a Resource
-=======
-[![Build Status](https://travis-ci.org/codefellows-seattle-301d9/08-crud-a-resource.svg?branch=master)](https://travis-ci.org/codefellows-seattle-301d9/08-crud-a-resource) [![GitHub issues](https://img.shields.io/badge/Issues%3F-Ask%20for%20Help!-orange.svg)](https://github.com/codefellows/seattle-301d4/issues/new)
 
-The starter code is all set for you and a pair to dive it, and get it working! Open up the [production deployment](https://cf-mvc-blog--class08.aerobatic.io/) of the working version, and play around in the console.
+The starter code is all set for you and a pair to dive it, and get it working! 
 
 ## User Stories: MVP
  - As a developer, I want article data to persist with SQL, so that I can store more, faster and have more query flexibility.
@@ -18,4 +16,3 @@ There is no portfolio assignment.
 ## Technical Requirements and Grading Rubric
  - Keep your code linted, as you work. Clean up all concerns before submitting.
  - Write your SQL queries inside the quotes found near the TODOs
- 
