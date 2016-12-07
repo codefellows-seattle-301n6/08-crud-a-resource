@@ -141,7 +141,7 @@
   };
 
 // TODO: ensure that our table has been setup.
-  // Article.clearTable();
+
   Article.createTable();
 
   module.Article = Article;
