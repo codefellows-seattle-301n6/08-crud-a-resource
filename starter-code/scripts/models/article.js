@@ -21,7 +21,7 @@
   // Set up a DB table for articles.
   Article.createTable = function() {
     webDB.execute(
-      'CREATE TABLE articles(id SERIAL PRIMARY KEY, title VARCHAR(48), category VARCHAR(48), author VARCHAR(25), authorUrl VARCHAR(48), publishedOn DATE, body TEXT);', // TODO: DONE What SQL command do we run here inside these quotes?
+      'CREATE TABLE IF NOT EXISTS articles(id SERIAL PRIMARY KEY, title VARCHAR(48), category VARCHAR(48), author VARCHAR(25), authorUrl VARCHAR(48), publishedOn DATE, body TEXT);', // TODO: DONE What SQL command do we run here inside these quotes?
 
       function() {
         console.log('Successfully set up the articles table.');
@@ -52,33 +52,33 @@
     webDB.execute('SELECT * FROM articles;', // <-----TODO: fill these quotes to query our table.
       function(rows) {
         if (rows.length) {
-        /* TODO:
+        /* TODO: DONE
            1 - Use Article.loadAll to instanitate these rows,
            2 - Pass control to the view by invoking the next function that
                 was passed in to Article.fetchAll */
-          Article.loadAll();
+          Article.loadAll(rows);
           nextFunction();
           console.log('fetchAll execute part 1 works');
         } else {
           $.getJSON('/data/hackerIpsum.json', function(responseData) {
             responseData.forEach(function(obj) {
               var article = new Article(obj); // This will instantiate an article instance based on each article object from our JSON.
-              /* TODO:
+              /* TODO: DONE
                1 - 'insert' the newly-instantiated article in the DB:
              */
-              Article.insertRecord();
-              console.log('fetchAll execute part 2 works')
+              article.insertRecord();
+              console.log('fetchAll execute part 2 works');
             });
             // Now get ALL the records out of the database:
             webDB.execute(
               'SELECT * FROM articles;', // <-----TODO: query our table
               function(rows) {
-                // TODO:
+                // TODO: DONE
                 // 1 - Use Article.loadAll to process our rows,
                 // 2 - Pass control to the view by calling the next function that was passed in to Article.fetchAll
-                Article.loadAll();
+                Article.loadAll(rows);
                 nextFunction();
-                console.log('fetchAll execute part 2 works')
+                console.log('fetchAll execute part 3 works');
               });
           });
         }
@@ -144,6 +144,6 @@
   };
 
 // TODO: ensure that our table has been setup.
-
+  Article.createTable();
   module.Article = Article;
 })(window);
