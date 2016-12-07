@@ -87,9 +87,9 @@
     webDB.execute(
       [
         {
-          /* NOTE: DONE this is an advanced admin option, so you will need to test
+          /* NOTE: this is an advanced admin option, so you will need to test
               out an individual query in the console */
-          'sql': 'DELETE FROM articles WHERE id = ?', // <---TODO: Delete an article instance from the database based on its id:
+          'sql': 'DELETE FROM articles WHERE id = ?', // <---TODO: DONE: Delete an article instance from the database based on its id:
           'data': [this.id]
         }
       ]
@@ -98,7 +98,7 @@
 
   Article.clearTable = function() {
     webDB.execute(
-      'DELETE ...;' // <----TODO: delete all records from the articles table.
+      'DELETE FROM articles;' // <----TODO: DONE: delete all records from the articles table.
     );
   };
 
