@@ -21,7 +21,7 @@
   // Set up a DB table for articles.
   Article.createTable = function() {
     webDB.execute(
-      'CREATE TABLE articles(id SERIAL PRIMARY KEY, title VARCHAR(48), category VARCHAR(48), author VARCHAR(25), authorUrl VARCHAR(48), publishedOn DATE, body TEXT);', // TODO: What SQL command do we run here inside these quotes?
+      'CREATE TABLE articles(id SERIAL PRIMARY KEY, title VARCHAR(48), category VARCHAR(48), author VARCHAR(25), authorUrl VARCHAR(48), publishedOn DATE, body TEXT);', // TODO: DONE What SQL command do we run here inside these quotes?
 
       function() {
         console.log('Successfully set up the articles table.');
@@ -41,7 +41,7 @@
       [
         {
           // NOTE: this method will be called elsewhere after we retrieve our JSON
-          'sql': '', // <----- TODO: complete our SQL query here, inside the quotes.
+          'sql': 'INSERT INTO articles(title, category, author, authorUrl, publishedOn, body) VALUES(?, ?, ?, ?, ?, ?);', // <----- TODO:DONE complete our SQL query here, inside the quotes.
           'data': [this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]
         }
       ]
@@ -49,14 +49,16 @@
   };
 
   Article.fetchAll = function(nextFunction) {
-    webDB.execute(
-      '', // <-----TODO: fill these quotes to query our table.
+    webDB.execute('SELECT * FROM articles;', // <-----TODO: fill these quotes to query our table.
       function(rows) {
         if (rows.length) {
         /* TODO:
            1 - Use Article.loadAll to instanitate these rows,
            2 - Pass control to the view by invoking the next function that
                 was passed in to Article.fetchAll */
+          Article.loadAll();
+          nextFunction();
+          console.log('fetchAll execute part 1 works');
         } else {
           $.getJSON('/data/hackerIpsum.json', function(responseData) {
             responseData.forEach(function(obj) {
@@ -64,14 +66,19 @@
               /* TODO:
                1 - 'insert' the newly-instantiated article in the DB:
              */
+              Article.insertRecord();
+              console.log('fetchAll execute part 2 works')
             });
             // Now get ALL the records out of the database:
             webDB.execute(
-              '', // <-----TODO: query our table
+              'SELECT * FROM articles;', // <-----TODO: query our table
               function(rows) {
                 // TODO:
                 // 1 - Use Article.loadAll to process our rows,
                 // 2 - Pass control to the view by calling the next function that was passed in to Article.fetchAll
+                Article.loadAll();
+                nextFunction();
+                console.log('fetchAll execute part 2 works')
               });
           });
         }
