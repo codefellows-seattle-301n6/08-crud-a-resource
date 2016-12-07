@@ -143,6 +143,7 @@
 // TODO: ensure that our table has been setup.
 
   Article.createTable();
+  // Article.clearTable();
 
   module.Article = Article;
 })(window);
