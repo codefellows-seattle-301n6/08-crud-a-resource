@@ -51,7 +51,6 @@
     webDB.execute(
       'SELECT * FROM articles;', // <-----TODO: fill these quotes to query our table.
       function(rows) {
-        console.log(rows);
         if (rows.length) {
           Article.loadAll(rows);
           nextFunction();
@@ -62,7 +61,6 @@
         } else {
           $.getJSON('/data/hackerIpsum.json', function(responseData) {
             responseData.forEach(function(obj) {
-              console.log('responseData: ' + responseData);
               var article = new Article(obj); // This will instantiate an article instance based on each article object from our JSON.
               article.insertRecord();
               /* TODO:
@@ -91,7 +89,7 @@
         {
           /* NOTE: this is an advanced admin option, so you will need to test
               out an individual query in the console */
-          'sql': '', // <---TODO: Delete an article instance from the database based on its id:
+          'sql': 'DELETE FROM articles WHERE id = ?;', // <---TODO: Delete an article instance from the database based on its id:
           'data': [this.id]
         }
       ]
@@ -143,7 +141,7 @@
   };
 
 // TODO: ensure that our table has been setup.
-  Article.clearTable();
+  // Article.clearTable();
   Article.createTable();
 
   module.Article = Article;
