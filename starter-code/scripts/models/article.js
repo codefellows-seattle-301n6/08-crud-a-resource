@@ -20,15 +20,17 @@
 
   // Set up a DB table for articles.
   Article.createTable = function() {
-    webDB.execute(```
-      CREATE TABLE article(
-        id SERIAL PRIMARY KEY
+    webDB.execute(
+      ```
+      'CREATE TABLE article (
+        id SERIAL PRIMARY KEY,
         title VARCHAR(100) NOT NULL,
         category VARCHAR(100) NOT NULL,
         author VARCHAR(100) NOT NULL,
         authorUrl VARCHAR(100) NOT NULL,
         publishedOn DATE,
-        body TEXT NOT NULL);```, // TODO: What SQL command do we run here inside these quotes?
+        body TEXT NOT NULL);'
+        ```, // TODO: DONE: What SQL command do we run here inside these quotes?
     function() {
       console.log('Successfully set up the articles table.');
     }
@@ -47,7 +49,7 @@ Article.prototype.insertRecord = function() {
     [
       {
         // NOTE: this method will be called elsewhere after we retrieve our JSON
-        'sql': 'INSERT INTO article (title, category, author, authorUrl, publishedOn, body) VALUES(?, ?, ?, ?, ?, ?);', // <----- TODO: complete our SQL query here, inside the quotes.
+        'sql': 'INSERT INTO article (title, category, author, authorUrl, publishedOn, body) VALUES(?, ?, ?, ?, ?, ?);', // <----- TODO: DONE: complete our SQL query here, inside the quotes.
         'data': [this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]
       }
     ]
@@ -56,10 +58,10 @@ Article.prototype.insertRecord = function() {
 
 Article.fetchAll = function(nextFunction) {
   webDB.execute(
-    'SELECT * FROM article;', // <-----TODO: fill these quotes to query our table.
+    'SELECT * FROM article;', // <-----TODO: DONE: fill these quotes to query our table.
     function(rows) {
       if (rows.length) {
-        /* TODO:
+        /* TODO: DONE:
         1 - Use Article.loadAll to instanitate these rows,
         2 - Pass control to the view by invoking the next function that
         was passed in to Article.fetchAll */
@@ -69,18 +71,22 @@ Article.fetchAll = function(nextFunction) {
         $.getJSON('/data/hackerIpsum.json', function(responseData) {
           responseData.forEach(function(obj) {
             var article = new Article(obj); // This will instantiate an article instance based on each article object from our JSON.
-            /* TODO:
+            /* TODO: DONE?:
             1 - 'insert' the newly-instantiated article in the DB:
             */
-            'INSERT INTO article (article)'
+            Article.insertRecord();
+            // 'INSERT INTO article (title, category, author, authorUrl, publishedOn, body)' +
+            // 'VALUES (Article.title, Article.category, Article.author, Article.authorUrl, Article.publishedOn, Article.body);'
           });
           // Now get ALL the records out of the database:
           webDB.execute(
-            'SELECT * FROM article;', // <-----TODO: query our table
+            'SELECT * FROM article;', // <-----TODO: DONE: query our table
             function(rows) {
-              // TODO:
+              // TODO: DONE?:
               // 1 - Use Article.loadAll to process our rows,
               // 2 - Pass control to the view by calling the next function that was passed in to Article.fetchAll
+              Article.loadAll();
+              nextFunction();
             });
           });
         }
@@ -94,7 +100,7 @@ Article.fetchAll = function(nextFunction) {
           {
             /* NOTE: this is an advanced admin option, so you will need to test
             out an individual query in the console */
-            'sql': '', // <---TODO: Delete an article instance from the database based on its id:
+            'sql': 'DELETE FROM article WHERE id = ?;', // <---TODO: DONE?: Delete an article instance from the database based on its id:
             'data': [this.id]
           }
         ]
@@ -103,7 +109,8 @@ Article.fetchAll = function(nextFunction) {
 
     Article.clearTable = function() {
       webDB.execute(
-        'DELETE ...;' // <----TODO: delete all records from the articles table.
+        'DELETE * FROM article;' // <----TODO: DONE: delete all records from the articles table.
+        // 'TRUNCATE * FROM ARTICLE;'
       );
     };
 
@@ -146,6 +153,6 @@ Article.fetchAll = function(nextFunction) {
     };
 
     // TODO: ensure that our table has been setup.
-
+    Article.createTable();
     module.Article = Article;
   })(window);
