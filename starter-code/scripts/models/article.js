@@ -58,7 +58,6 @@
                 was passed in to Article.fetchAll */
           Article.loadAll(rows);
           nextFunction();
-          console.log('fetchAll execute part 1 works');
         } else {
           $.getJSON('/data/hackerIpsum.json', function(responseData) {
             responseData.forEach(function(obj) {
@@ -67,7 +66,6 @@
                1 - 'insert' the newly-instantiated article in the DB:
              */
               article.insertRecord();
-              console.log('fetchAll execute part 2 works');
             });
             // Now get ALL the records out of the database:
             webDB.execute(
@@ -78,7 +76,6 @@
                 // 2 - Pass control to the view by calling the next function that was passed in to Article.fetchAll
                 Article.loadAll(rows);
                 nextFunction();
-                console.log('fetchAll execute part 3 works');
               });
           });
         }
@@ -90,9 +87,9 @@
     webDB.execute(
       [
         {
-          /* NOTE: this is an advanced admin option, so you will need to test
+          /* NOTE: DONE this is an advanced admin option, so you will need to test
               out an individual query in the console */
-          'sql': '', // <---TODO: Delete an article instance from the database based on its id:
+          'sql': 'DELETE FROM articles WHERE id = ?', // <---TODO: Delete an article instance from the database based on its id:
           'data': [this.id]
         }
       ]
