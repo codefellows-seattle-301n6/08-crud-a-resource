@@ -76,6 +76,6 @@
     articleView.setTeasers();
   };
   //TODO: uncomment me when ready!
-  //Article.fetchAll(articleView.renderIndexPage);
+  Article.fetchAll(articleView.renderIndexPage);
   module.articleView = articleView;
 })(window);
