@@ -21,7 +21,15 @@
   // Set up a DB table for articles.
   Article.createTable = function() {
     webDB.execute(
-      '', // TODO: What SQL command do we run here inside these quotes?
+      'CREATE TABLE articles (' +
+      'id SERIAL PRIMARY KEY,' +
+      'title VARCHAR(100),' +
+      'category VARCHAR(100),' +
+      'author VARCHAR(100),' +
+      'authorUrl VARCHAR(100),' +
+      'publishedOn DATE,' +
+      'body TEXT);',
+      // TODO: DONE: What SQL command do we run here inside these quotes?
       function() {
         console.log('Successfully set up the articles table.');
       }
@@ -40,7 +48,7 @@
       [
         {
           // NOTE: this method will be called elsewhere after we retrieve our JSON
-          'sql': '', // <----- TODO: complete our SQL query here, inside the quotes.
+          'sql': 'INSERT INTO articles (title, category, author, authorUrl, publishedOn, body) VALUES(?, ?, ?, ?, ?, ?);',  // <----- TODO: DONE: complete our SQL query here, inside the quotes.
           'data': [this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]
         }
       ]
@@ -49,28 +57,35 @@
 
   Article.fetchAll = function(nextFunction) {
     webDB.execute(
-      '', // <-----TODO: fill these quotes to query our table.
+      'SELECT * FROM articles;', // <-----TODO: DONE: fill these quotes to query our table.
       function(rows) {
         if (rows.length) {
-        /* TODO:
-           1 - Use Article.loadAll to instanitate these rows,
-           2 - Pass control to the view by invoking the next function that
-                was passed in to Article.fetchAll */
+          /* TODO: DONE:
+          1 - Use Article.loadAll to instanitate these rows,
+          2 - Pass control to the view by invoking the next function that
+          was passed in to Article.fetchAll */
+          Article.loadAll(rows);
+          nextFunction();
         } else {
           $.getJSON('/data/hackerIpsum.json', function(responseData) {
             responseData.forEach(function(obj) {
               var article = new Article(obj); // This will instantiate an article instance based on each article object from our JSON.
-              /* TODO:
-               1 - 'insert' the newly-instantiated article in the DB:
-             */
+              /* TODO: DONE?:
+              1 - 'insert' the newly-instantiated article in the DB:
+              */
+              article.insertRecord();
+              // 'INSERT INTO article (title, category, author, authorUrl, publishedOn, body)' +
+              // 'VALUES (Article.title, Article.category, Article.author, Article.authorUrl, Article.publishedOn, Article.body);'
             });
             // Now get ALL the records out of the database:
             webDB.execute(
-              '', // <-----TODO: query our table
+              'SELECT * FROM articles;', // <-----TODO: DONE: query our table
               function(rows) {
-                // TODO:
+                // TODO: DONE?:
                 // 1 - Use Article.loadAll to process our rows,
                 // 2 - Pass control to the view by calling the next function that was passed in to Article.fetchAll
+                Article.loadAll(rows);
+                nextFunction();
               });
           });
         }
@@ -83,8 +98,8 @@
       [
         {
           /* NOTE: this is an advanced admin option, so you will need to test
-              out an individual query in the console */
-          'sql': '', // <---TODO: Delete an article instance from the database based on its id:
+          out an individual query in the console */
+          'sql': 'DELETE FROM articles WHERE id = ?;', // <---TODO: DONE?: Delete an article instance from the database based on its id:
           'data': [this.id]
         }
       ]
@@ -93,7 +108,8 @@
 
   Article.clearTable = function() {
     webDB.execute(
-      'DELETE ...;' // <----TODO: delete all records from the articles table.
+      'DELETE * FROM articles;' // <----TODO: DONE: delete all records from the articles table.
+      // 'TRUNCATE * FROM ARTICLE;'
     );
   };
 
@@ -135,7 +151,7 @@
     });
   };
 
-// TODO: ensure that our table has been setup.
-
+  // TODO: ensure that our table has been setup.
+  Article.createTable();
   module.Article = Article;
 })(window);
